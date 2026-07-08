@@ -132,7 +132,7 @@ function buildOrder(){const keys=Object.keys(qty);let grandIncl=0;
  const lines=keys.map(k=>{const{i,size}=parseKey(k);const p=PRODUCTS[i];const q=qty[k];grandIncl+=p.priceIncl*q;
   return {name:p.name,category:p.cat,orderBy:p.unit,size:size,qty:q,unitPriceExclVat:+excl(p.priceIncl).toFixed(2),unitPriceInclVat:p.priceIncl,lineTotalExclVat:+(excl(p.priceIncl)*q).toFixed(2),lineTotalInclVat:+(p.priceIncl*q).toFixed(2)};});
  const subExcl=grandIncl/(1+VAT),vat=grandIncl-subExcl;
- return {store:store.value,submittedBy:name.value,email:email.value,date:date.value,deliveryAddress:address.value,
+ return {store:document.getElementById('store').value,submittedBy:document.getElementById('name').value,email:document.getElementById('email').value,date:document.getElementById('date').value,deliveryAddress:document.getElementById('address').value,
   items:lines,subtotalExclVat:+subExcl.toFixed(2),vat21:+vat.toFixed(2),totalInclVat:+grandIncl.toFixed(2),totalItems:keys.reduce((a,k)=>a+qty[k],0)};}
 function orderText(o){let t=`PRODUCT REQUEST\nStore: ${o.store}\nSubmitted by: ${o.submittedBy} (${o.email})\nDate: ${o.date}\nDelivery address: ${o.deliveryAddress}\n`;
  CATS.forEach(c=>{const ci=o.items.filter(l=>l.category===c);if(!ci.length)return;t+=`\n== ${c} ==\n`;
@@ -141,7 +141,7 @@ function orderText(o){let t=`PRODUCT REQUEST\nStore: ${o.store}\nSubmitted by: $
  return t;}
 document.getElementById('search').oninput=e=>{search=e.target.value.toLowerCase();renderList();};
 document.getElementById('submit').onclick=async()=>{
- if(!store.value||!name.value||!email.value||!address.value){alert('Please fill Store, Name, E-mail and Delivery address.');return;}
+ if(!document.getElementById('store').value||!document.getElementById('name').value||!document.getElementById('email').value||!document.getElementById('address').value){alert('Please fill Store, Name, E-mail and Delivery address.');return;}
  if(!Object.keys(qty).length){alert('Add at least one product.');return;}
  const o=buildOrder();const okEl=document.getElementById('ok');
  if(FLOW_URL){try{const r=await fetch(FLOW_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(o)});
