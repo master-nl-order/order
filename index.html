@@ -113,7 +113,7 @@ function renderList(){const el=document.getElementById('plist');el.innerHTML='';
  el.querySelectorAll('[data-q]').forEach(inp=>inp.onchange=()=>setQ(inp.dataset.q,parseInt(inp.value)||0));
  el.querySelectorAll('[data-qs]').forEach(inp=>inp.onchange=()=>setQ(inp.dataset.qs+'_'+inp.dataset.size,parseInt(inp.value)||0));
 }
-function setQ(key,v){v=Math.max(0,v||0);if(v)qty[key]=v;else delete qty[key];renderSummary();}
+function setQ(key,v){v=Math.max(0,v||0);if(v)qty[key]=v;else delete qty[key];var val=qty[key]||0,k=''+key,el;if(k.indexOf('_')>-1){var p=k.split('_');el=document.querySelector('[data-qs="'+p[0]+'"][data-size="'+p[1]+'"]');}else{el=document.querySelector('[data-q="'+k+'"]');}if(el)el.value=val;renderSummary();}
 function parseKey(k){const s=(''+k).split('_');return {i:+s[0],size:s[1]||null};}
 function renderSummary(){const el=document.getElementById('sum');const keys=Object.keys(qty);
  if(!keys.length){el.innerHTML='<div class="empty">No products yet — add quantities on the left.</div>';}
